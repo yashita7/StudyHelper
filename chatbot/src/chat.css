@@ -53,7 +53,7 @@ height: 100vh;
     border-radius: 10px;
     word-wrap: break-word;
     font-size: 15px;
-    opacity: 0;
+    
     animation: fadeIn 0.3s forwards;
 }
 
@@ -69,7 +69,7 @@ height: 100vh;
 /* Bot Message (Left Aligned) */
 .bot-message {
   align-self: flex-start;
-  background-color: #2a2a2a;
+  background-color:rgb(58, 137, 227);
   color: #ddd;
   border-bottom-left-radius: 5px;
 }
@@ -131,6 +131,50 @@ height: 100vh;
 .messages-container::-webkit-scrollbar-track {
   background: #222;
 }
+
+.bot-message {
+  
+  text-align: left;
+}
+
+.user-message {
+  text-align: right;
+  paddin:30px;
+}
+.messages-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align messages to the left */
+  gap: 10px;
+  width: 100%;
+}
+
+.message {
+  max-width: 75%; /* Prevents messages from stretching too much */
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  word-wrap: break-word;
+}
+
+.user-message {
+  align-self: flex-end; /* User messages appear on the right */
+}
+
+.bot-message {
+  align-self: flex-start; /* Bot messages appear on the left */
+}
+
+.message-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.message-sender {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
 /* html, body {
   height: 100%;
   margin: 0;

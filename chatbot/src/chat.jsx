@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./Chat.css"; // Importing the external CSS file for styling
+import { TbMessageChatbotFilled } from "react-icons/tb";
+import ReactMarkdown from "react-markdown";
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -15,8 +17,17 @@ const Chat = () => {
 
     try {
       const response = await axios.post("http://127.0.0.1:8000/chat", { message: input });
-      const botMessage = { sender: "Bot", text: response.data.response };
-      setMessages((prev) => [...prev, botMessage]);
+
+      console.log("API Response:", response); // Debugging API response
+      console.log("Response Data:", response.data); // Checking data
+
+      if (response.data && response.data.response) {
+        const botMessage = { sender: "Bot", text: response.data.response };
+        setMessages((prev) => [...prev, botMessage]);
+      } else {
+        console.warn("Unexpected response format:", response.data);
+        setMessages((prev) => [...prev, { sender: "Bot", text: "Unexpected response format." }]);
+      }
     } catch (error) {
       console.error("Error:", error);
       setMessages((prev) => [...prev, { sender: "Bot", text: "Sorry, an error occurred." }]);
@@ -32,12 +43,22 @@ const Chat = () => {
 
   return (
     <div className="chat-container">
-      <div className="chat-header">Chatbot</div>
+      <div className="chat-header">
+        <TbMessageChatbotFilled /> &nbsp;&nbsp;Study Helper
+      </div>
       <div className="messages-container">
         {messages.map((msg, index) => (
           <div key={index} className={`message ${msg.sender === "You" ? "user-message" : "bot-message"}`}>
-            {msg.text}
+          <div className="message-content">
+            <span className="message-sender">{msg.sender}:</span>
+            {msg.sender === "Bot" ? (
+              <ReactMarkdown>{msg.text}</ReactMarkdown>
+            ) : (
+              <span>{msg.text}</span>
+            )}
           </div>
+        </div>
+        
         ))}
         <div ref={messagesEndRef} />
       </div>
@@ -50,7 +71,9 @@ const Chat = () => {
           onKeyPress={(e) => e.key === "Enter" && sendMessage()}
           placeholder="Type a message..."
         />
-        <button onClick={sendMessage} className="send-button">&nbsp;➤</button>
+        <button onClick={sendMessage} className="send-button">
+          &nbsp;➤
+        </button>
       </div>
     </div>
   );
