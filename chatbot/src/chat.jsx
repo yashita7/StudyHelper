@@ -3,6 +3,7 @@ import axios from "axios";
 import "./Chat.css"; // Importing the external CSS file for styling
 import { TbMessageChatbotFilled } from "react-icons/tb";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm"; // Enables tables, strikethrough, etc.
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -52,13 +53,12 @@ const Chat = () => {
           <div className="message-content">
             <span className="message-sender">{msg.sender}:</span>
             {msg.sender === "Bot" ? (
-              <ReactMarkdown>{msg.text}</ReactMarkdown>
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.text}</ReactMarkdown>
             ) : (
               <span>{msg.text}</span>
             )}
           </div>
         </div>
-        
         ))}
         <div ref={messagesEndRef} />
       </div>
