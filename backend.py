@@ -95,7 +95,7 @@ async def chat(request: ChatRequest):
     crew = Crew(agents=[agent], tasks=[current_task])
 
     try:
-        response = await crew.kickoff_async()
+        response = await asyncio.create_task(crew.kickoff_async())
         return {"response": response.raw}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
